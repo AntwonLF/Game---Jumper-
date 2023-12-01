@@ -11,10 +11,14 @@ Introducing "Jumper," my gaming application where players engage in an exhilarat
 ## Wire Frames
 
 **Initial Landing View**
+![Alt text](<assets/Game (Start).png>)
 
+**Game In Motion**
+![Alt text](<assets/Game (Clicked).png>)
 
+![Alt text](<assets/Game (in Motion).png>)
 **Results View**
-
+![Alt text](<assets/Game (End).png>)
 
 ## User Stories
 
