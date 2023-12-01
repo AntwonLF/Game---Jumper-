@@ -42,10 +42,85 @@ Notionboard template for building projects ( You can use this for any project )
 https://www.notion.so/GA-Unit-3-Tunr-Lab-da2c82fafd4e4a7aa654676732db9ee3
 
 #### Timeline - Daily Accountability
-Example of a Timeline to keep organized and on task for hitting goals every single day you’re on the sprint for your project.
 
-Create your own table using this markdown table generator website:
-https://www.tablesgenerator.com/markdown_tables
+| Day        |   | Task                               | Blockers | Notes/ Thoughts |
+|------------|---|------------------------------------|----------|-----------------|
+| Thursday   |   | Create and present proposal        |          |                 |
+| Friday     |   | Create game enviroment         |          |                 |
+| Saturday   |   | Start building functions and impletmenting            |          |                 |
+| Sunday     |   | Add functionality                  |          |                 |
+| Monday     |   | Add styling                        |          |                 |
+| Tuesday    |   | Finaliza MVP                       |          |                 |
+| Wedenesday |   | Work on stretch goals              |          |                 |
+| Thursday   |   | Work on icebox items if applicable |          |                 |
+| Friday     |   | Presentation Day!                  |          |                 |
+|            |   |                                    |          |                 |
 
-Do not neglect to plan, you will thank yourself later for being proactive!
+
+
+### Game Pseudocode - Jumper
+
+```//  Define the canvas dimensions
+- Canvas width and Height
+
+// Define player properties
+- Player itself 
+- Player movement position (x || y)
+
+//Define falling and jumping  variables
+- Speed of jump
+- Speed of fall
+
+//Define obstacle properties 
+- Circle
+- size 
+
+//Initialize score and label score 
+- Score = 0
+- scoreLabel
+
+
+// Create a function to start the game
+
+
+
+// Game canvus object
+
+
+// Create a player function
+- width, height, if it sits on (x || y)
+
+// Function to create a obstacle
+- block 
+- set block properties 
+- draw block on canvas
+- move block towards player
+- reset block position 
+
+// Function to detect collison with obstacle
+- detectCollison()
+
+// Function to create a score label
+- set score label 
+
+// Function to update canvas
+- Check for collision
+- Clear the canvas
+- Make player fall
+- Draw player
+- Make player Jump
+- Draw block
+- Move obstacle (block) towards the player (circle)
+- Redraw the score label with updated score
+
+
+// Create a function to generate a ramdom number 
+- To randomize the height and width of obstacles.
+
+// Function to resest Jump after delay
+- resetJump()
+
+// Event listener for spacebar key to trigger Jump
+- document.body.onkeyup ```
+
 
