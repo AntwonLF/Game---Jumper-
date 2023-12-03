@@ -22,7 +22,7 @@ function createPlayer(radius, xPos) {
     this.radius = radius
     this.x = xPos;
     this.y = playerYPosition;
-// Drawing circle using "ctx" 2D rednering context of the canvas
+// Drawing circle using "ctx" 2D rendering context of the canvas
     ctx = gameCanvas.context
     ctx.fillStyle = "black";
     ctx.beginPath();
