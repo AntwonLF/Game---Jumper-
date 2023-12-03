@@ -1,7 +1,7 @@
 const canvasWidth = 600;
 const canvasHeight = 400;
-const player = 0;
-const playerYPosition = 200;
+let player = 0;
+let playerYPosition = 100;
 
 const gameCanvas = {
     canvas: document.createElement('canvas'),
@@ -15,9 +15,20 @@ const gameCanvas = {
 function startGame() {
     gameCanvas.start();
     
-function createPlayer() {
-    
+    player = new createPlayer(30, 30, 10);
 }
+
+function createPlayer(radius, xPos) {
+    this.radius = radius
+    this.x = xPos;
+    this.y = playerYPosition;
+// Drawing circle using "ctx" 2D rednering context of the canvas
+    ctx = gameCanvas.context
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.closePath();
 }
 
 startGame();
