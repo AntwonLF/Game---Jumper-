@@ -13,8 +13,7 @@ const gameCanvas = {
         this.canvas.height = canvasHeight;
         this.context = this.canvas.getContext('2d');
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.player = new Player(30, 30, 10);
-        console.log("Player initial position:", this.player.x, this.player.y);
+        this.player = new Player(30, 30, 10, playerYPosition);
         this.player.draw();
         this.updateInterval = setInterval(this.updateCanvas.bind(this), 1000 / 60);
     },
@@ -49,6 +48,7 @@ class Player {
 
     move() {
         this.y += this.fallSpeed;
+        this.fallSpeed += 0.3;
         this.stopPlayer();
     }
 
