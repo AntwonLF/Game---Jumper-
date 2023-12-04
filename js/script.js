@@ -15,7 +15,6 @@ function createBlock() {
     const speed = randomNumber(1, 5);
 
     return new Block(width, height, speed);
-
 }
 
 document.body.addEventListener("keydown", function(event) {
@@ -55,7 +54,7 @@ const gameCanvas = {
         this.player.draw();
 
         block.draw();
-    
+        block.attackPlayer();
 
         if(keys.space) {
             this.player.jump();
@@ -130,23 +129,40 @@ class Block{
         this.x = canvasWidth; 
         this.y = canvasHeight - this.height;
     }
-    
+
+     returnToAttackPosition() {
+        this.width = randomNumber(50, 100);
+        this.height = randomNumber(50, 100);
+        this.speed = randomNumber(1, 5)
+        this.x = canvasWidth;
+        this.y = canvasHeight - this.height;
+     }
+
+     attackPlayer() {
+        const player = gameCanvas.player;
+        if (
+            player.x + player.radius >= this.x &&
+            player.x - player.radius <= this.x + this.width &&
+            player.y + player.radius >= this.y && 
+            player.y - player.radius <= this.y + this.height
+        ) { 
+            console.log("Player Hit");
+            this.returnToAttackPosition();
+        }
+    }
     draw() {
         const ctx = gameCanvas.context;
         ctx.fillStyle = "white";
         ctx.fillRect(this.x, this.y, this.width, this.height);
     
         if (this.x + this.width < 0) {
-            this.x = canvasWidth;
-            this.width = randomNumber(50, 100);
-            this.height = randomNumber(50, 100);
-            this.speed = randomNumber(1, 5);
+            this.returnToAttackPosition();
         }
     
         this.x -= this.speed;
     }
 }
-const block = createBlock();
+let block = createBlock();
 
 
 
