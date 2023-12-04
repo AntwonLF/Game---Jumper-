@@ -1,20 +1,23 @@
 const canvasWidth = 800;
 const canvasHeight = 600;
-const playerYPosition = 100;
-
-
+const playerYPosition  = canvasHeight - 30;
 const keys = {
     space: false,
-    // ... (other keys)
 };
 
-document.addEventListener("keydown", function (event) {
-    keys.space = event.code === "Space";
+document.body.addEventListener("keydown", function(event) {
+     if (event.code === "Space") {
+        keys.space = true;
+    }
 });
 
-document.addEventListener("keyup", function (event) {
-    keys.space = event.code !== "Space";
+document.body.addEventListener("keyup", function (event) {
+    if (event.code === "Space") {
+        keys.space = false;
+    }
 });
+
+
 
 const gameCanvas = {
     canvas: document.getElementById('gameCanvas'),
@@ -45,6 +48,8 @@ const gameCanvas = {
     clearCanvas: function () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }
+
+    
 };
 
 class Player {
@@ -52,9 +57,11 @@ class Player {
         this.radius = radius;
         this.x = xPos;
         this.y = playerYPos;
-        this.fallSpeed = fallSpeed;
+        this.fallSpeed = 10;
         this.isJumping = false;
-        this.jumpSpeed = 8;
+        this.jumpSpeed = 7.5;
+        this.jumpHeight = 10;
+        this.jumpDistance = 0;
     }
 
     draw() {
@@ -67,34 +74,37 @@ class Player {
     }
 
     move() {
-        if(this.isJumping) {
-        this.y += this.fallSpeed;
-        this.fallSpeed += 0.3;
-        this.stopPlayer();
+        if (this.isJumping) {
+            if (this.jumpDistance < this.jumpHeight) {
+            this.y -= this.jumpSpeed;
+            this.jumpDistance += this.jumpspeed;
         } else {
-            this.fallSpeed += 0.3;
+            this.isJumping = false;
+            this.jumpDistance = 0;
+         }
+        } else {
             this.y += this.fallSpeed;
             this.stopPlayer();
-        }
+      }
     }
 
     stopPlayer() {
         if (this.y + this.radius >= gameCanvas.canvas.height) {
-            this.fallSpeed = 0;
             this.y = gameCanvas.canvas.height - this.radius;
+            this.resetJump();
         }
     }
 
     jump() {
         if(!this.isJumping) {
             this.isJumping = true;
-            this.fallSpeed = this.jumpSpeed;
         }
     }
     resetJump() {
         this.isJumping = false;
     }
 }
+
 
 function startGame() {
     gameCanvas.start();
