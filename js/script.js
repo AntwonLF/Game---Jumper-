@@ -1,9 +1,22 @@
 const canvasWidth = 800;
 const canvasHeight = 600;
 const playerYPosition  = canvasHeight - 30;
+
 const keys = {
     space: false,
 };
+
+function randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function createBlock() {
+    const width = randomNumber(50, 100);
+    const height = randomNumber(50, 100);
+    const speed = randomNumber(1, 5);
+
+    return new Block(width, height, speed);
+
+}
 
 document.body.addEventListener("keydown", function(event) {
      if (event.code === "Space") {
@@ -32,6 +45,7 @@ const gameCanvas = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.player = new Player(30, 30, 10, playerYPosition);
         this.player.draw();
+
         this.updateInterval = setInterval(this.updateCanvas.bind(this), 1000 / 60);
     },
 
@@ -39,6 +53,9 @@ const gameCanvas = {
         this.clearCanvas();
         this.player.move();
         this.player.draw();
+
+        block.draw();
+    
 
         if(keys.space) {
             this.player.jump();
@@ -77,7 +94,7 @@ class Player {
         if (this.isJumping) {
             if (this.jumpDistance < this.jumpHeight) {
             this.y -= this.jumpSpeed;
-            this.jumpDistance += this.jumpspeed;
+            this.jumpDistance += this.jumpSpeed;
         } else {
             this.isJumping = false;
             this.jumpDistance = 0;
@@ -103,7 +120,35 @@ class Player {
     resetJump() {
         this.isJumping = false;
     }
+};
+
+class Block{
+    constructor(width, height, speed) {
+        this.width = width;
+        this.height = height;
+        this.speed = speed;
+        this.x = canvasWidth; 
+        this.y = canvasHeight - this.height;
+    }
+    
+    draw() {
+        const ctx = gameCanvas.context;
+        ctx.fillStyle = "white";
+        ctx.fillRect(this.x, this.y, this.width, this.height);
+    
+        if (this.x + this.width < 0) {
+            this.x = canvasWidth;
+            this.width = randomNumber(50, 100);
+            this.height = randomNumber(50, 100);
+            this.speed = randomNumber(1, 5);
+        }
+    
+        this.x -= this.speed;
+    }
 }
+const block = createBlock();
+
+
 
 
 function startGame() {
