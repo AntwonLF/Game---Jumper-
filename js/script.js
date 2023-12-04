@@ -2,6 +2,20 @@ const canvasWidth = 800;
 const canvasHeight = 600;
 const playerYPosition = 100;
 
+
+const keys = {
+    space: false,
+    // ... (other keys)
+};
+
+document.addEventListener("keydown", function (event) {
+    keys.space = event.code === "Space";
+});
+
+document.addEventListener("keyup", function (event) {
+    keys.space = event.code !== "Space";
+});
+
 const gameCanvas = {
     canvas: document.getElementById('gameCanvas'),
     player: null,
@@ -22,6 +36,10 @@ const gameCanvas = {
         this.clearCanvas();
         this.player.move();
         this.player.draw();
+
+        if(keys.space) {
+            this.player.jump();
+        }
     },
 
     clearCanvas: function () {
@@ -35,6 +53,8 @@ class Player {
         this.x = xPos;
         this.y = playerYPos;
         this.fallSpeed = fallSpeed;
+        this.isJumping = false;
+        this.jumpSpeed = 8;
     }
 
     draw() {
@@ -47,9 +67,15 @@ class Player {
     }
 
     move() {
+        if(this.isJumping) {
         this.y += this.fallSpeed;
         this.fallSpeed += 0.3;
         this.stopPlayer();
+        } else {
+            this.fallSpeed += 0.3;
+            this.y += this.fallSpeed;
+            this.stopPlayer();
+        }
     }
 
     stopPlayer() {
@@ -57,6 +83,16 @@ class Player {
             this.fallSpeed = 0;
             this.y = gameCanvas.canvas.height - this.radius;
         }
+    }
+
+    jump() {
+        if(!this.isJumping) {
+            this.isJumping = true;
+            this.fallSpeed = this.jumpSpeed;
+        }
+    }
+    resetJump() {
+        this.isJumping = false;
     }
 }
 
