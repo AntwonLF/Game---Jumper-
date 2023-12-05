@@ -192,8 +192,9 @@ class Player {
         this.jumpSpeed = 12;
         this.jumpHeight = 10;
         this.jumpDistance = 0;
+        
     }
-
+    
     draw() {
         const ctx = gameCanvas.context;
         ctx.fillStyle = "black";
@@ -223,6 +224,7 @@ class Player {
             this.y = gameCanvas.canvas.height - this.radius;
             this.resetJump();
         }
+
     }
 
     jump() {
