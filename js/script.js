@@ -12,12 +12,11 @@ function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function createBlock() {
-    const width = randomNumber(65, 100);
-    const height = randomNumber(65, 100);
-    const speed = randomNumber(3, 7);
+function createBlocks() {
+    const topBlock = new Block(randomNumber(65, 100), randomNumber(65, 100), randomNumber(3, 7), 0, true);
+    const bottomBlock = new Block(randomNumber(65, 100), randomNumber(65, 100), randomNumber(3, 7), canvasHeight - topBlock.height, false);
 
-    return new Block(width, height, speed);
+    return [topBlock, bottomBlock];
 }
 
 document.body.addEventListener("keydown", function(event) {
@@ -48,7 +47,7 @@ function restartGame() {
 
     gameCanvas.player = new Player(30, 30, 10, playerYPosition);
     gameCanvas.player.draw();
-    gameCanvas.block = createBlock();
+    gameCanvas.block = createBlocks();
 
     gameCanvas.updateInterval = setInterval(gameCanvas.updateCanvas.bind(gameCanvas), 1000 / 60);
 
@@ -79,7 +78,7 @@ const gameCanvas = {
         this.player = new Player(30, 30, 10, playerYPosition);
         this.player.draw();
 
-        this.block = createBlock();
+        this.block = createBlocks();
 
         this.updateInterval = setInterval(this.updateCanvas.bind(this), 1000 / 60);
        }
@@ -105,17 +104,30 @@ const gameCanvas = {
 
     detectCollision: function () {
         const player = this.player;
-        const block = this.block;
+        const blocks = this.block;
+
+        for (let i = 0; i < this.block.length; i++) {
+            const block = blocks[i];
+            const playerTop = player.y - player.radius;
+            const playerBottom = player.y + player.radius;
+            const playerLeft = player.x - player.radius;
+            const playerRight = player.x + player.radius;
+
+            const blockTop = block.y;
+            const blockBottom = block.y + block.height;
+            const blockLeft = block.x;
+            const blockRight = block.x + block.width;
 
         if (
-            player.x + player.radius >= block.x &&
-            player.x - player.radius <= block.x + block.width &&
-            player.y + player.radius >= block.y && 
-            player.y - player.radius <= block.y + block.height
+           playerBottom > blockTop &&
+           playerTop < blockBottom &&
+           playerRight > blockLeft &&
+           playerLeft < blockRight
         ) {
              clearInterval(this.updateInterval);
             this.end();
         }
+      }
     },
 
     drawScore: function () {
@@ -164,11 +176,12 @@ const gameCanvas = {
             this.player.move();
             this.player.draw();
 
-            this.block.draw();
-            this.block.attackPlayer();
-
+        // Loops through each block in gameCanvas.blocks
+        for (let i = 0; i < this.block.length; i++) {
+            this.block[i].draw();
+            this.block[i].attackPlayer();
+        }
             this.detectCollision();
-
             this.drawScore();
 
             if(keys.space) {
@@ -187,11 +200,12 @@ class Player {
         this.radius = radius;
         this.x = xPos;
         this.y = playerYPos;
-        this.fallSpeed = 5;
+        this.fallSpeed = 7;
         this.isJumping = false;
         this.jumpSpeed = 12;
         this.jumpHeight = 10;
         this.jumpDistance = 0;
+        this.maxHeight = 50;
     }
 
     draw() {
@@ -216,6 +230,18 @@ class Player {
             this.y += this.fallSpeed;
             this.stopPlayer();
         }
+
+        this.checkCanvasBoundaries();
+    }
+
+    checkCanvasBoundaries() {
+        if (this.y < 0) {
+            this.y = 0;
+        }
+
+        if(this.y + this.radius > gameCanvas.maxHeight) {
+            this.y = gameCanvas.maxHeight - this.radius;
+        }
     }
 
     stopPlayer() {
@@ -237,22 +263,23 @@ class Player {
 }
 
 class Block {
-    constructor(width, height, speed) {
+    constructor(width, height, speed, yPos, isTop) {
         this.width = width;
         this.height = height;
         this.speed = speed;
+        this.isTop = isTop;
         this.x = canvasWidth; 
-        this.y = canvasHeight - this.height;
+        this.y = isTop ? yPos : yPos - height; // Adjust the height for top and botton blocks
     }
 
     returnToAttackPosition() {
         if (this.x < 0) {
-            this.width = randomNumber(50, 100);
+            this.width = randomNumber(25, 50);
             this.height = randomNumber(50, 250);
-            this.speed = randomNumber(5, 10);
+            this.speed = randomNumber(7, 15);
             score++;
             this.x = canvasWidth;
-            this.y = canvasHeight - this.height;
+            this.y = this.isTop ? randomNumber(0, canvasHeight / 2 - this.height) : canvasHeight - this.height;
         }
     }
 
@@ -267,6 +294,7 @@ class Block {
             // console.log("Player Hit");
             this.returnToAttackPosition();
             gameCanvas.stopCanvas();
+            endGame();
         }
     }
 
@@ -285,6 +313,7 @@ class Block {
 
 function startGame() {
     gameCanvas.start();
+    gameCanvas.block = createBlocks();
 }
 
 function endGame() {
