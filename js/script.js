@@ -294,6 +294,7 @@ class Block {
             // console.log("Player Hit");
             this.returnToAttackPosition();
             gameCanvas.stopCanvas();
+            endGame();
         }
     }
 
