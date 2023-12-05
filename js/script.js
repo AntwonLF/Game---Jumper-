@@ -12,9 +12,9 @@ function randomNumber(min, max) {
 }
 
 function createBlock() {
-    const width = randomNumber(50, 100);
-    const height = randomNumber(50, 100);
-    const speed = randomNumber(1, 5);
+    const width = randomNumber(65, 100);
+    const height = randomNumber(65, 100);
+    const speed = randomNumber(3, 7);
 
     return new Block(width, height, speed);
 }
@@ -22,6 +22,10 @@ function createBlock() {
 document.body.addEventListener("keydown", function(event) {
     if (event.code === "Space") {
         keys.space = true;
+
+        if (gameCanvas.gameOver) {
+            restartGame();
+        }
     }
 });
 
@@ -31,6 +35,29 @@ document.body.addEventListener("keyup", function (event) {
     }
 });
 
+
+function restartGame() {
+ if (!gameCanvas.isRunning)   {
+    gameCanvas.gameOver = false;
+    gameCanvas.clearCanvas();
+    gameCanvas.drawRestartMessage();
+    gameCanvas.drawScore();
+    gameCanvas.addRestartSpaceBarListener();
+
+
+    gameCanvas.player = new Player(30, 30, 10, playerYPosition);
+    gameCanvas.player.draw();
+    gameCanvas.block = createBlock();
+
+    gameCanvas.updateInterval = setInterval(gameCanvas.updateCanvas.bind(gameCanvas), 1000 / 60);
+
+    //Clears existing interval before starting a new one
+    clearInterval(gameCanvas.updateInterval);
+
+    score = 0;
+   }
+}
+
 const gameCanvas = {
     canvas: document.getElementById('gameCanvas'),
     player: null,
@@ -38,9 +65,40 @@ const gameCanvas = {
     fallSpeed: 2,
     updateInterval: null,
     gameOver: false,
+    isRunning: false,
+
+    start: function () {
+        if (!this.isRunning) {
+            this.isRunning = true;
+       
+        this.canvas.width = canvasWidth;
+        this.canvas.height = canvasHeight;
+        this.context = this.canvas.getContext('2d');
+        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+        this.player = new Player(30, 30, 10, playerYPosition);
+        this.player.draw();
+
+        this.block = createBlock();
+
+        this.updateInterval = setInterval(this.updateCanvas.bind(this), 1000 / 60);
+       }
+    },
+
+    end: function () {
+        // console.log("GAME OVER - Better Luck Next Time");
+        this.gameOver = true;
+        this.clearCanvas();
+        this.drawGameOverMessage();
+        this.drawRestartMessage();
+        this.addRestartSpaceBarListener();
+        score = 0;
+        this.player = null;
+        this.block = null;
+    },
 
     stopCanvas: function () {
-        console.log("GAME OVER - Better Luck Next Time");
+        // console.log("GAME OVER - Better Luck Next Time");
+        this.isRunning = false;
         clearInterval(this.updateInterval);
     },
 
@@ -54,8 +112,7 @@ const gameCanvas = {
             player.y + player.radius >= block.y && 
             player.y - player.radius <= block.y + block.height
         ) {
-            console.log("GAME OVER - Better Luck Next Time");
-            clearInterval(this.updateInterval);
+             clearInterval(this.updateInterval);
             this.end();
         }
     },
@@ -65,31 +122,6 @@ const gameCanvas = {
         ctx.font = "20px Arial";
         ctx.fillStyle = "black";
         ctx.fillText("Score: " + score, 10, 20);
-    },
-
-    start: function () {
-        this.canvas.width = canvasWidth;
-        this.canvas.height = canvasHeight;
-        this.context = this.canvas.getContext('2d');
-        document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-        this.player = new Player(30, 30, 10, playerYPosition);
-        this.player.draw();
-
-        this.block = createBlock();
-
-        this.updateInterval = setInterval(this.updateCanvas.bind(this), 1000 / 60);
-    },
-
-    end: function () {
-        console.log("GAME OVER - Better Luck Next Time");
-        this.gameOver = true;
-        this.clearCanvas();
-        this.drawGameOverMessage();
-        this.drawRestartMessage();
-        this.addRestartSpaceBarListener();
-        score = 0;
-        this.player = null;
-        this.block = null;
     },
 
     drawRestartMessage: function () {
@@ -106,6 +138,7 @@ const gameCanvas = {
             if (event.code === "Space") {
                 document.removeEventListener("keydown", restartHandler);
                 startGame();
+
             }
         };
 
@@ -155,7 +188,7 @@ class Player {
         this.y = playerYPos;
         this.fallSpeed = 5;
         this.isJumping = false;
-        this.jumpSpeed = 10;
+        this.jumpSpeed = 12;
         this.jumpHeight = 10;
         this.jumpDistance = 0;
     }
@@ -230,7 +263,7 @@ class Block {
             player.y + player.radius >= this.y && 
             player.y - player.radius <= this.y + this.height
         ) { 
-            console.log("Player Hit");
+            // console.log("Player Hit");
             this.returnToAttackPosition();
             gameCanvas.stopCanvas();
         }
