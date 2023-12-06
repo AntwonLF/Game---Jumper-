@@ -9,7 +9,7 @@ const keys = {
 
 
     const audioContext = new (window.webkitAudioContext || window.AudioContext)();
-    const backgroundMusicUrl = 'musicAssets/lofi-christmas.mp3';
+    const backgroundMusicUrl = 'musicAssets/sounds/lofi-christmas.mp3';
     const backgroundMusic = new Audio();
 
     backgroundMusic.src = backgroundMusicUrl;
