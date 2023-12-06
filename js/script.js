@@ -28,7 +28,7 @@ document.body.addEventListener("keydown", function(event) {
         }
     }
 });
-
+    
 document.body.addEventListener("keyup", function (event) {
     if (event.code === "Space") {
         keys.space = false;
