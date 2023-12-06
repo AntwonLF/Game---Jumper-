@@ -8,6 +8,27 @@ const keys = {
 };
 
 
+    const audioContext = new (window.webkitAudioContext || window.AudioContext)();
+    const backgroundMusicUrl = 'musicAssets/lofi-christmas.mp3';
+    const backgroundMusic = new Audio();
+
+    backgroundMusic.src = backgroundMusicUrl;
+    backgroundMusic.loop = true;
+
+    const backgroundMusicSource = audioContext.createMediaElementSource(backgroundMusic);backgroundMusicSource.connect(audioContext.destination);
+
+    backgroundMusic.addEventListener('canplaythrough', () => {
+        backgroundMusic.play();
+    });
+
+const thudSound = new Audio("musicAssets/sounds/thud.mp3");
+
+function playThudSound() {
+    thudSound.currentTime = 0;
+    thudSound.play();
+    thudSound.volume = 0.5;
+}
+
 function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -103,8 +124,10 @@ const gameCanvas = {
     },
 
     detectCollision: function () {
+      
         const player = this.player;
         const blocks = this.block;
+        let CollisionDetected = false;
 
         for (let i = 0; i < this.block.length; i++) {
             const block = blocks[i];
@@ -124,16 +147,22 @@ const gameCanvas = {
            playerRight > blockLeft &&
            playerLeft < blockRight
         ) {
-             clearInterval(this.updateInterval);
-            this.end();
+
+            CollisionDetected = true;
+            break;
+             
         }
       }
+        if (CollisionDetected) {            clearInterval(this.updateInterval);
+            this.end();
+            // playThudSound();
+        }
     },
 
     drawScore: function () {
         const ctx = this.context;
         ctx.font = "20px Arial";
-        ctx.fillStyle = "white";
+        ctx.fillStyle = "green";
         ctx.fillText("Score: " + score, 10, 20);
     },
 
@@ -161,7 +190,7 @@ const gameCanvas = {
     drawGameOverMessage: function () {
         const ctx = this.context;
         ctx.font = "40px Arial";
-        ctx.fillStyle = "Purple";
+        ctx.fillStyle = "red";
         ctx.fillText("GAME OVER", canvasWidth / 2 - 100, canvasHeight / 2 - 20);
         ctx.font = "20px Arial";
         ctx.fillStyle = "green";
@@ -175,18 +204,18 @@ const gameCanvas = {
             this.clearCanvas();
             this.player.move();
             this.player.draw();
-
+        
         // Loops through each block in gameCanvas.blocks
-        for (let i = 0; i < this.block.length; i++) {
-            this.block[i].draw();
-            this.block[i].attackPlayer();
-        }
-            this.detectCollision();
-            this.drawScore();
-
-            if(keys.space) {
-                this.player.jump();
+            for (let i = 0; i < this.block.length; i++) {
+                this.block[i].draw();
+                this.block[i].attackPlayer();
             }
+        this.detectCollision();
+        this.drawScore();
+
+        if(keys.space) {
+            this.player.jump();
+         }
     },
 
     clearCanvas: function () { 
@@ -209,7 +238,7 @@ class Player {
 
     draw() {
         const ctx = gameCanvas.context;
-        ctx.fillStyle = "purple";
+        ctx.fillStyle = "green";
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         ctx.fill();
@@ -311,12 +340,19 @@ class Block {
 }
 
 function startGame() {
+    backgroundMusic.play();
     gameCanvas.start();
     gameCanvas.block = createBlocks();
 }
 
 function endGame() {
+    backgroundMusic.pause();
+    backgroundMusic.currentTime = 0;
     gameCanvas.end();
+    playThudSound();
 }
 
 startGame();
+
+
+
