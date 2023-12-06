@@ -9,7 +9,7 @@ const keys = {
 
 
     const audioContext = new (window.webkitAudioContext || window.AudioContext)();
-    const backgroundMusicUrl = 'musicAssests/lofi-christmas.mp3';
+    const backgroundMusicUrl = 'musicAssets/lofi-christmas.mp3';
     const backgroundMusic = new Audio();
 
     backgroundMusic.src = backgroundMusicUrl;
@@ -21,15 +21,13 @@ const keys = {
         backgroundMusic.play();
     });
 
-const thudSound = new Audio("musicAssests/sounds/thud.mp3");
+const thudSound = new Audio("musicAssets/sounds/thud.mp3");
 
 function playThudSound() {
     thudSound.currentTime = 0;
     thudSound.play();
     thudSound.volume = 0.5;
 }
-
-
 
 function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
