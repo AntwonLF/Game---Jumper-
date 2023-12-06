@@ -17,10 +17,6 @@ const keys = {
 
     const backgroundMusicSource = audioContext.createMediaElementSource(backgroundMusic);backgroundMusicSource.connect(audioContext.destination);
 
-    backgroundMusic.addEventListener('canplaythrough', () => {
-        backgroundMusic.play();
-    });
-
 const thudSound = new Audio("musicAssets/sounds/thud.mp3");
 
 function playThudSound() {
