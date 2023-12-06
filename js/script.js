@@ -1,5 +1,5 @@
-const canvasWidth = window.innerWidth * 0.8;
-const canvasHeight = window.innerHeight * 0.8;
+const canvasWidth = 800;
+const canvasHeight = 600;
 const playerYPosition  = canvasHeight - 30;
 let score = 0;
 
@@ -11,10 +11,10 @@ const keys = {
 function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-//width, height, speed (x,y)
+
 function createBlocks() {
-    const topBlock = new Block(randomNumber(65, 85), randomNumber(65, 85), randomNumber(3, 7), 0, true);
-    const bottomBlock = new Block(randomNumber(65, 100), randomNumber(65, 100), randomNumber(5, 10), canvasHeight - topBlock.height, false);
+    const topBlock = new Block(randomNumber(65, 100), randomNumber(65, 100), randomNumber(3, 7), 0, true);
+    const bottomBlock = new Block(randomNumber(65, 100), randomNumber(65, 100), randomNumber(3, 7), canvasHeight - topBlock.height, false);
 
     return [topBlock, bottomBlock];
 }
@@ -34,21 +34,6 @@ document.body.addEventListener("keyup", function (event) {
         keys.space = false;
     }
 });
-
-window.addEventListener('resize', function () {
-    canvasWidth = window.innerWidth * 0.8;
-    canvasHeight = window.innerHeight * 0.8;
-    gameCanvas.canvas.width = canvasWidth;
-    gameCanvas.canvas.height = canvasHeight;
-});
-
-document.body.addEventListener("touchstart", function (event) {
-    const touchX = event.touches[0].clientX;
-    const touchY = event.touches[0].clientY;
-    console.log(`Touch coordinates: X=${touchX}, Y=${touchY}`);
-});
-
-
 
 
 function restartGame() {
@@ -147,7 +132,7 @@ const gameCanvas = {
 
     drawScore: function () {
         const ctx = this.context;
-        ctx.font = `${this.canvas.width * 0.02}px Arial`;
+        ctx.font = "20px Arial";
         ctx.fillStyle = "white";
         ctx.fillText("Score: " + score, 10, 20);
     },
@@ -155,7 +140,7 @@ const gameCanvas = {
     drawRestartMessage: function () {
        if (this.gameOver) { 
             const ctx = this.context;
-            ctx.font = `${this.canvas.width * 0.02}px Arial`;
+            ctx.font = "20px Arial";
             ctx.fillStyle = "white";
             ctx.fillText("Press space bar to start", canvasWidth / 2 - 130, canvasHeight / 2 + 50);
        }
@@ -175,10 +160,10 @@ const gameCanvas = {
 
     drawGameOverMessage: function () {
         const ctx = this.context;
-        ctx.font = `${this.canvas.width * 0.02}px Arial`;
+        ctx.font = "40px Arial";
         ctx.fillStyle = "Purple";
         ctx.fillText("GAME OVER", canvasWidth / 2 - 100, canvasHeight / 2 - 20);
-        ctx.font = `${this.canvas.width * 0.02}px Arial`;
+        ctx.font = "20px Arial";
         ctx.fillStyle = "green";
         ctx.fillText("Score: " + score, canvasWidth / 2 - 30, canvasHeight / 2 + 20);
     },
@@ -217,8 +202,8 @@ class Player {
         this.y = playerYPos;
         this.fallSpeed = 7;
         this.isJumping = false;
-        this.jumpSpeed = 15;
-        this.jumpHeight = 1;
+        this.jumpSpeed = 14;
+        this.jumpHeight = 10;
         this.jumpDistance = 0;
     }
 
