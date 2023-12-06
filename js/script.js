@@ -204,8 +204,7 @@ class Player {
         this.isJumping = false;
         this.jumpSpeed = 14;
         this.jumpHeight = 10;
-        this.jumpDistance = 1;
-        this.maxHeight = 50;
+        this.jumpDistance = 0;
     }
 
     draw() {
