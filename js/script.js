@@ -133,7 +133,7 @@ const gameCanvas = {
     drawScore: function () {
         const ctx = this.context;
         ctx.font = "20px Arial";
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "white";
         ctx.fillText("Score: " + score, 10, 20);
     },
 
@@ -141,7 +141,7 @@ const gameCanvas = {
        if (this.gameOver) { 
             const ctx = this.context;
             ctx.font = "20px Arial";
-            ctx.fillStyle = "black";
+            ctx.fillStyle = "white";
             ctx.fillText("Press space bar to start", canvasWidth / 2 - 130, canvasHeight / 2 + 50);
        }
     },
@@ -161,10 +161,10 @@ const gameCanvas = {
     drawGameOverMessage: function () {
         const ctx = this.context;
         ctx.font = "40px Arial";
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "Purple";
         ctx.fillText("GAME OVER", canvasWidth / 2 - 100, canvasHeight / 2 - 20);
         ctx.font = "20px Arial";
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "green";
         ctx.fillText("Score: " + score, canvasWidth / 2 - 30, canvasHeight / 2 + 20);
     },
 
@@ -202,15 +202,15 @@ class Player {
         this.y = playerYPos;
         this.fallSpeed = 7;
         this.isJumping = false;
-        this.jumpSpeed = 12;
+        this.jumpSpeed = 14;
         this.jumpHeight = 10;
-        this.jumpDistance = 0;
+        this.jumpDistance = 1;
         this.maxHeight = 50;
     }
 
     draw() {
         const ctx = gameCanvas.context;
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "purple";
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         ctx.fill();
