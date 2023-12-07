@@ -2,17 +2,15 @@ const canvasWidth = 800;
 const canvasHeight = 600;
 const playerYPosition  = canvasHeight - 30;
 const audioContext = new (window.AudioContext || window.AudioContext)();
-const backgroundMusic = playBackgroundMusic();
+const backgroundMusic = new Audio('musicAssets/sounds/lofi-christmas.mp3');
+const playerImage = new Image(); 
 let score = 0;
 
 const keys = {
     space: false,
 };
 function playBackgroundMusic () {
-    const backgroundMusicUrl = 'musicAssets/sounds/lofi-christmas.mp3';
-    const backgroundMusic = new Audio();
-    
-    backgroundMusic.src = backgroundMusicUrl;
+    backgroundMusic.src = backgroundMusic;
     backgroundMusic.loop = true;
     backgroundMusic.autoplay = false;
 
@@ -238,15 +236,13 @@ class Player {
         this.jumpSpeed = 14;
         this.jumpHeight = 10;
         this.jumpDistance = 0;
+        this.playerImage = new Image();
+        this.playerImage.src = 'assets/santa.png';
     }
 
     draw() {
         const ctx = gameCanvas.context;
-        ctx.fillStyle = "green";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.closePath();
+        ctx.drawImage(this.playerImage, this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);   
     }
 
     move() {
