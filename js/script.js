@@ -1,20 +1,30 @@
 const canvasWidth = 800;
 const canvasHeight = 600;
 const playerYPosition  = canvasHeight - 30;
+const audioContext = new (window.AudioContext || window.AudioContext)();
+const backgroundMusic = playBackgroundMusic();
 let score = 0;
 
 const keys = {
     space: false,
 };
-
-
-const audioContext = new (window.AudioContext || window.AudioContext)();
-const backgroundMusicUrl = 'musicAssets/sounds/lofi-christmas.mp3';
-const backgroundMusic = new Audio();
-
+function playBackgroundMusic () {
+    const backgroundMusicUrl = 'musicAssets/sounds/lofi-christmas.mp3';
+    const backgroundMusic = new Audio();
+    
     backgroundMusic.src = backgroundMusicUrl;
     backgroundMusic.loop = true;
     backgroundMusic.autoplay = false;
+
+    function setVolume(volume) {
+        backgroundMusic.volume = volume;
+    }
+    setVolume(0.2);
+    backgroundMusic.play();
+
+    return backgroundMusic;
+}
+
 
 
 
@@ -23,7 +33,7 @@ const thudSound = new Audio("musicAssets/sounds/thud.mp3");
 function playThudSound() {
     thudSound.currentTime = 0;
     thudSound.play();
-    thudSound.volume = 0.5;
+    thudSound.volume = 1;
 }
 
 function randomNumber(min, max) {
@@ -151,8 +161,8 @@ const gameCanvas = {
       }
         if (CollisionDetected) {            clearInterval(this.updateInterval);
             this.end();
-            // playThudSound();
         }
+        playThudSound();
     },
 
     drawScore: function () {
@@ -344,10 +354,9 @@ function startGame() {
 }
 
 function endGame() {
-    backgroundMusic.pause();
-    backgroundMusic.currentTime = 0;
+   backgroundMusic.pause();
+   backgroundMusic.currentTime = 0;
     gameCanvas.end();
-    playThudSound();
 }
 
 startGame();
