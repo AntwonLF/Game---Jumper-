@@ -8,14 +8,15 @@ const keys = {
 };
 
 
-    const audioContext = new (window.webkitAudioContext || window.AudioContext)();
-    const backgroundMusicUrl = 'musicAssets/sounds/lofi-christmas.mp3';
-    const backgroundMusic = new Audio();
+const audioContext = new (window.AudioContext || window.AudioContext)();
+const backgroundMusicUrl = 'musicAssets/sounds/lofi-christmas.mp3';
+const backgroundMusic = new Audio();
 
     backgroundMusic.src = backgroundMusicUrl;
     backgroundMusic.loop = true;
+    backgroundMusic.autoplay = false;
 
-    const backgroundMusicSource = audioContext.createMediaElementSource(backgroundMusic);backgroundMusicSource.connect(audioContext.destination);
+
 
 const thudSound = new Audio("musicAssets/sounds/thud.mp3");
 
@@ -51,7 +52,6 @@ document.body.addEventListener("keyup", function (event) {
         keys.space = false;
     }
 });
-
 
 function restartGame() {
  if (!gameCanvas.isRunning)   {
