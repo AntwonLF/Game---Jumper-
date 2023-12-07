@@ -26,8 +26,6 @@ function playBackgroundMusic () {
 }
 
 
-
-
 const thudSound = new Audio("musicAssets/sounds/thud.mp3");
 
 function playThudSound() {
