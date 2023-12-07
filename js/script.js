@@ -8,16 +8,33 @@ const keys = {
 };
 
 
+const audioContext = new (window.AudioContext || window.AudioContext)();
+const backgroundMusicUrl = 'musicAssets/sounds/lofi-christmas.mp3';
+const backgroundMusic = new Audio();
+
+    backgroundMusic.src = backgroundMusicUrl;
+    backgroundMusic.loop = true;
+    backgroundMusic.autoplay = false;
+
+
+
+const thudSound = new Audio("musicAssets/sounds/thud.mp3");
+
+function playThudSound() {
+    thudSound.currentTime = 0;
+    thudSound.play();
+    thudSound.volume = 0.5;
+}
+
 function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function createBlock() {
-    const width = randomNumber(65, 100);
-    const height = randomNumber(65, 100);
-    const speed = randomNumber(3, 7);
+function createBlocks() {
+    const topBlock = new Block(randomNumber(65, 100), randomNumber(65, 100), randomNumber(3, 7), 0, true);
+    const bottomBlock = new Block(randomNumber(65, 100), randomNumber(65, 100), randomNumber(3, 7), canvasHeight - topBlock.height, false);
 
-    return new Block(width, height, speed);
+    return [topBlock, bottomBlock];
 }
 
 document.body.addEventListener("keydown", function(event) {
@@ -29,13 +46,12 @@ document.body.addEventListener("keydown", function(event) {
         }
     }
 });
-
+    
 document.body.addEventListener("keyup", function (event) {
     if (event.code === "Space") {
         keys.space = false;
     }
 });
-
 
 function restartGame() {
  if (!gameCanvas.isRunning)   {
@@ -48,7 +64,7 @@ function restartGame() {
 
     gameCanvas.player = new Player(30, 30, 10, playerYPosition);
     gameCanvas.player.draw();
-    gameCanvas.block = createBlock();
+    gameCanvas.block = createBlocks();
 
     gameCanvas.updateInterval = setInterval(gameCanvas.updateCanvas.bind(gameCanvas), 1000 / 60);
 
@@ -79,7 +95,7 @@ const gameCanvas = {
         this.player = new Player(30, 30, 10, playerYPosition);
         this.player.draw();
 
-        this.block = createBlock();
+        this.block = createBlocks();
 
         this.updateInterval = setInterval(this.updateCanvas.bind(this), 1000 / 60);
        }
@@ -104,24 +120,45 @@ const gameCanvas = {
     },
 
     detectCollision: function () {
+      
         const player = this.player;
-        const block = this.block;
+        const blocks = this.block;
+        let CollisionDetected = false;
+
+        for (let i = 0; i < this.block.length; i++) {
+            const block = blocks[i];
+            const playerTop = player.y - player.radius;
+            const playerBottom = player.y + player.radius;
+            const playerLeft = player.x - player.radius;
+            const playerRight = player.x + player.radius;
+
+            const blockTop = block.y;
+            const blockBottom = block.y + block.height;
+            const blockLeft = block.x;
+            const blockRight = block.x + block.width;
 
         if (
-            player.x + player.radius >= block.x &&
-            player.x - player.radius <= block.x + block.width &&
-            player.y + player.radius >= block.y && 
-            player.y - player.radius <= block.y + block.height
+           playerBottom > blockTop &&
+           playerTop < blockBottom &&
+           playerRight > blockLeft &&
+           playerLeft < blockRight
         ) {
-             clearInterval(this.updateInterval);
+
+            CollisionDetected = true;
+            break;
+             
+        }
+      }
+        if (CollisionDetected) {            clearInterval(this.updateInterval);
             this.end();
+            // playThudSound();
         }
     },
 
     drawScore: function () {
         const ctx = this.context;
         ctx.font = "20px Arial";
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "green";
         ctx.fillText("Score: " + score, 10, 20);
     },
 
@@ -129,7 +166,7 @@ const gameCanvas = {
        if (this.gameOver) { 
             const ctx = this.context;
             ctx.font = "20px Arial";
-            ctx.fillStyle = "black";
+            ctx.fillStyle = "white";
             ctx.fillText("Press space bar to start", canvasWidth / 2 - 130, canvasHeight / 2 + 50);
        }
     },
@@ -152,7 +189,7 @@ const gameCanvas = {
         ctx.fillStyle = "red";
         ctx.fillText("GAME OVER", canvasWidth / 2 - 100, canvasHeight / 2 - 20);
         ctx.font = "20px Arial";
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "green";
         ctx.fillText("Score: " + score, canvasWidth / 2 - 30, canvasHeight / 2 + 20);
     },
 
@@ -163,17 +200,18 @@ const gameCanvas = {
             this.clearCanvas();
             this.player.move();
             this.player.draw();
-
-            this.block.draw();
-            this.block.attackPlayer();
-
-            this.detectCollision();
-
-            this.drawScore();
-
-            if(keys.space) {
-                this.player.jump();
+        
+        // Loops through each block in gameCanvas.blocks
+            for (let i = 0; i < this.block.length; i++) {
+                this.block[i].draw();
+                this.block[i].attackPlayer();
             }
+        this.detectCollision();
+        this.drawScore();
+
+        if(keys.space) {
+            this.player.jump();
+         }
     },
 
     clearCanvas: function () { 
@@ -187,9 +225,9 @@ class Player {
         this.radius = radius;
         this.x = xPos;
         this.y = playerYPos;
-        this.fallSpeed = 5;
+        this.fallSpeed = 7;
         this.isJumping = false;
-        this.jumpSpeed = 12;
+        this.jumpSpeed = 14;
         this.jumpHeight = 10;
         this.jumpDistance = 0;
         
@@ -197,7 +235,7 @@ class Player {
     
     draw() {
         const ctx = gameCanvas.context;
-        ctx.fillStyle = "black";
+        ctx.fillStyle = "green";
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
         ctx.fill();
@@ -216,6 +254,18 @@ class Player {
         } else {
             this.y += this.fallSpeed;
             this.stopPlayer();
+        }
+
+        this.checkCanvasBoundaries();
+    }
+
+    checkCanvasBoundaries() {
+        if (this.y < 0) {
+            this.y = 0;
+        }
+
+        if(this.y + this.radius > gameCanvas.maxHeight) {
+            this.y = gameCanvas.maxHeight - this.radius;
         }
     }
 
@@ -239,22 +289,23 @@ class Player {
 }
 
 class Block {
-    constructor(width, height, speed) {
+    constructor(width, height, speed, yPos, isTop) {
         this.width = width;
         this.height = height;
         this.speed = speed;
+        this.isTop = isTop;
         this.x = canvasWidth; 
-        this.y = canvasHeight - this.height;
+        this.y = isTop ? yPos : yPos - height; // Adjust the height for top and botton blocks
     }
 
     returnToAttackPosition() {
         if (this.x < 0) {
-            this.width = randomNumber(50, 100);
+            this.width = randomNumber(25, 50);
             this.height = randomNumber(50, 250);
-            this.speed = randomNumber(5, 10);
+            this.speed = randomNumber(7, 15);
             score++;
             this.x = canvasWidth;
-            this.y = canvasHeight - this.height;
+            this.y = this.isTop ? randomNumber(0, canvasHeight / 2 - this.height) : canvasHeight - this.height;
         }
     }
 
@@ -269,6 +320,7 @@ class Block {
             // console.log("Player Hit");
             this.returnToAttackPosition();
             gameCanvas.stopCanvas();
+            endGame();
         }
     }
 
@@ -286,11 +338,19 @@ class Block {
 }
 
 function startGame() {
+    backgroundMusic.play();
     gameCanvas.start();
+    gameCanvas.block = createBlocks();
 }
 
 function endGame() {
+    backgroundMusic.pause();
+    backgroundMusic.currentTime = 0;
     gameCanvas.end();
+    playThudSound();
 }
 
 startGame();
+
+
+
