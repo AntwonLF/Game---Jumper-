@@ -1,12 +1,7 @@
 # Game---Jumper- && Technologies:
-Jumper" is a festive 2D side-scrolling game built with HTML, CSS, and JavaScript. The game boasts a dynamic theme that changes throughout the year to celebrate various holidays. In its current state, it's set in a snowy Christmas wonderland. The player takes control of a character, possibly embodying Santa Claus, symbolized by a circular image gracefully moving across the canvas.
 
 # Why---Jumper:
-I chose to create "Jumper" seeking the challenge of initially developing Angry Birds. After careful consideration, I opted for a variation inspired by Flappy Bird, culminating in the unique creation that is my brainchild. "Jumper" stands out not just for its entertaining gameplay but also for its versatility. The capacity to adapt its theme for diverse holidays adds an extra layer of excitement for players. Whether it's the snowy charm of Christmas or the vibrant hues of other celebrations, "Jumper" ensures a delightful journey through the seasons.
-
-# Getting Started
-Click this link below!!
-
+I chose to create "Jumper" seeking the challenge of initially developing Angry Birds. After careful consideration, I opted for a variation inspired by Flappy Bird, culminating in the unique creation that is my brainchild. "Jumper" stands out not just for its entertaining gameplay but also for its versatility. The capacity to adapt its theme for diverse holidays adds an extra layer of excitement for players. Whether it's the snowy charm of Christmas or the vibrant hues of other celebrations, "Jumper" ensures a delightful journey through the seasons.Notably, this project benefits from the creative input and assistance provided by ChatGPT, a language model developed by OpenAI.
 
 # Key---Features:
 
@@ -26,22 +21,38 @@ Score Monitoring: Track your performance as you navigate the snowy landscape.
 
 Semi-Responsive Layout: Experience visually appealing and responsive design across various devices.
 
+# Getting Started
+Click this link below to play!!
+https://jumperthgame.netlify.app
+
 # WireFrames/ Screenshots: 
-- Before
+### Before
 
-Start ![Alt text](<assets/Game (Start).png>)
+Start
 
-In Motion ![Alt text](<assets/Game (in Motion).png>)
+ ![Alt text](<assets/Game (Start).png>)
 
-Finished ![Alt text](<assets/Game (End).png>)
+In Motion 
 
-- After
+![Alt text](<assets/Game (in Motion).png>)
 
-Start ![Alt text](<assets/Finished  (Start).png>)
+Finished 
 
-In Motion ![Alt text](<assets/Finished (In Motion).png>)
+![Alt text](<assets/Game (End).png>)
 
-End ![Alt text](<assets/Finished (End).png>)
+### After
+
+ Start 
+
+![Alt text](<assets/Finished  (Start).png>)
+
+  In Motion 
+ 
+ ![Alt text](<assets/Finished (In Motion).png>)
+
+End 
+
+![Alt text](<assets/Finished (End).png>)
 
 # Timeline
 
@@ -58,6 +69,18 @@ End ![Alt text](<assets/Finished (End).png>)
 | Friday     |   | Presentation Day!                  |          |                 |
 |            |   |                                    |          |                 |
 
+# Attributions:
+- Demtrice Williams (Friend, Mentor, 2 Years Dev experience)
+- Fritz 
+- Pranto, Ashiqur Rahman (YouTuber). "Jump and Run Game with HTML, CSS, and JavaScript." https://www.youtube.com/watch?v=a0TyCnFgqlk
+- Web Dev Simplified (YouTube channel). "How To Create Your First Game - JavaScript." https://www.youtube.com/watch?v=47eXVRJKdkU 
+- Images used in this project were sourced from [PNGTree](https://pngtree.com/). 
+
+// Music claim
+- Music from #Uppbeat (free for Creators!):
+https://uppbeat.io/t/all-good-folks/lo-fi-christmas
+License code: C9VGYGNJKLAQYDRM
+
 # Next Steps
 
 - Transform the game theme for a different holiday.
@@ -66,13 +89,92 @@ End ![Alt text](<assets/Finished (End).png>)
 - Integrate a playlist for a more dynamic and varied musical experience.
 
 
-# Attributions:
-- Demtrice Williams (Friend, Mentor, 2 Years Dev experience)
-- Fritz 
-- Pranto, Ashiqur Rahman (YouTuber). "Jump and Run Game with HTML, CSS, and JavaScript." https://www.youtube.com/watch?v=a0TyCnFgqlk
-- Web Dev Simplified (YouTube channel). "How To Create Your First Game - JavaScript." https://www.youtube.com/watch?v=47eXVRJKdkU 
+# Game Pseudocode - Jumper
+```// Define canvas dimensions
+- Canvas width and height
 
-// Music claim
-- Music from #Uppbeat (free for Creators!):
-https://uppbeat.io/t/all-good-folks/lo-fi-christmas
-License code: C9VGYGNJKLAQYDRM
+// Define player properties
+- Player object
+- Player movement position (x, y)
+
+// Define falling and jumping variables
+- Jump speed
+- Fall speed
+
+// Define obstacle properties 
+- Block (circle)
+- Size 
+
+// Initialize score and label score 
+- Score = 0
+- Score label
+
+// Create a function to start the game
+- Initialize game canvas object
+
+// Game canvas object
+- Canvas element
+- Player object
+- Block object
+- Fall speed
+- Update interval
+- Game over flag
+- Running state flag
+
+// Create a player function
+- Width, height, initial position (x, y)
+- Draw player on canvas
+- Move player function
+  - Check for jumping
+  - Adjust position based on jumping or falling
+  - Check canvas boundaries
+  - Stop player at the bottom of the canvas
+- Check canvas boundaries function
+- Jump function
+- Reset jump function
+
+// Function to create an obstacle
+- Block object
+- Set block properties (width, height, speed, position)
+- Draw block on canvas
+- Move block towards the player
+- Reset block position
+
+// Function to detect collision with obstacle
+- DetectCollision function
+
+// Function to create a score label
+- Set score label properties
+
+// Function to update canvas
+- Clear the canvas
+- Move player
+- Draw player
+- Draw block
+- Move block towards the player
+- Detect collision
+- Draw score label
+
+// Create a function to generate a random number
+- To randomize the height and width of obstacles
+
+// Function to reset jump after delay
+- ResetJump function
+
+// Event listener for spacebar key to trigger jump
+- Document.body.onkeyup event
+
+// Additional functions for game flow
+- StartGame function
+- EndGame function
+- RestartGame function
+
+// Class for Snowflake object
+- X, y, size, speed
+- Draw function
+- Update function
+
+// Additional functions for audio and random number generation
+- PlayBackgroundMusic function
+- PlayThudSound function
+- RandomNumber function```
