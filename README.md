@@ -76,5 +76,3 @@ End ![Alt text](<assets/Finished (End).png>)
 - Music from #Uppbeat (free for Creators!):
 https://uppbeat.io/t/all-good-folks/lo-fi-christmas
 License code: C9VGYGNJKLAQYDRM
-
-
