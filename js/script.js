@@ -117,10 +117,10 @@ const gameCanvas = {
             const { x: blockX, y: blockY, width, height } = block[i];
     
             if (
-                y + radius > blockY &&
-                y - radius < blockY + height &&
-                x + radius > blockX &&
-                x - radius < blockX + width
+                y + radius >= blockY &&
+                y - radius <= blockY + height &&
+                x + radius >= blockX &&
+                x - radius <= blockX + width
             ) {
                 collisionDetected = true;
                 break;
