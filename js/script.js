@@ -7,64 +7,10 @@ const backgroundImage =  new Image ();
 const thudSound = new Audio("musicAssets/sounds/thud.mp3");
 let score = 0;
 
-
-
 const keys = {
     space: false,
 };
-function playBackgroundMusic () {
-    backgroundMusic.src = backgroundMusic;
-    backgroundMusic.loop = true;
-    backgroundMusic.autoplay = false;
 
-    function setVolume(volume) {
-        backgroundMusic.volume = volume;
-    }
-    setVolume(0.2);
-    backgroundMusic.play();
-
-    return backgroundMusic;
-}
-
-function playThudSound() {
-    thudSound.currentTime = 0;
-    thudSound.play();
-    thudSound.volume = 1;
-}
-
-function randomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-function createBlocks() {
-    const topBlock = new Block(randomNumber(65, 100), randomNumber(65, 100), randomNumber(3, 7), 0, true);
-    const bottomBlock = new Block(randomNumber(65, 100), randomNumber(65, 100), randomNumber(3, 7), canvasHeight - topBlock.height, false);
-
-    return [topBlock, bottomBlock];
-}
-
-
-function restartGame() {
- if (!gameCanvas.isRunning)   {
-    gameCanvas.gameOver = false;
-    gameCanvas.clearCanvas();
-    gameCanvas.drawRestartMessage();
-    gameCanvas.drawScore();
-    gameCanvas.addRestartSpaceBarListener();
-
-
-    gameCanvas.player = new Player(30, 30, 10, playerYPosition);
-    gameCanvas.player.draw();
-    gameCanvas.block = createBlocks();
-
-    gameCanvas.updateInterval = setInterval(gameCanvas.updateCanvas.bind(gameCanvas), 1000 / 60);
-
-    //Clears existing interval before starting a new one
-    clearInterval(gameCanvas.updateInterval);
-
-    score = 0;
-   }
-}
 const gameCanvas = {
     canvas: document.getElementById('gameCanvas'),
     player: null,
@@ -198,6 +144,59 @@ const gameCanvas = {
         this.context.clearRect(0, 0, 800, 600);
     },  
 };
+function playBackgroundMusic () {
+    backgroundMusic.src = backgroundMusic;
+    backgroundMusic.loop = true;
+    backgroundMusic.autoplay = false;
+
+    function setVolume(volume) {
+        backgroundMusic.volume = volume;
+    }
+    setVolume(0.2);
+    backgroundMusic.play();
+
+    return backgroundMusic;
+}
+
+function playThudSound() {
+    thudSound.currentTime = 0;
+    thudSound.play();
+    thudSound.volume = 1;
+}
+
+function randomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function createBlocks() {
+    const topBlock = new Block(randomNumber(65, 100), randomNumber(65, 100), randomNumber(3, 7), 0, true);
+    const bottomBlock = new Block(randomNumber(65, 100), randomNumber(65, 100), randomNumber(3, 7), canvasHeight - topBlock.height, false);
+
+    return [topBlock, bottomBlock];
+}
+
+
+function restartGame() {
+ if (!gameCanvas.isRunning)   {
+    gameCanvas.gameOver = false;
+    gameCanvas.clearCanvas();
+    gameCanvas.drawRestartMessage();
+    gameCanvas.drawScore();
+    gameCanvas.addRestartSpaceBarListener();
+
+
+    gameCanvas.player = new Player(30, 30, 10, playerYPosition);
+    gameCanvas.player.draw();
+    gameCanvas.block = createBlocks();
+
+    gameCanvas.updateInterval = setInterval(gameCanvas.updateCanvas.bind(gameCanvas), 1000 / 60);
+
+    //Clears existing interval before starting a new one
+    clearInterval(gameCanvas.updateInterval);
+
+    score = 0;
+   }
+}
 
 class Player {
     constructor(radius, xPos, fallSpeed, playerYPos) {
@@ -215,7 +214,10 @@ class Player {
 
     draw() {
         const ctx = gameCanvas.context;
-        ctx.drawImage(this.playerImage, this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);   
+        ctx.save();
+        ctx.scale(-1, 1);
+        ctx.drawImage(this.playerImage, -(this.x + this.radius), this.y - this.radius, this.radius * 2, this.radius * 2);  
+        ctx.restore(); 
     }
 
     move() {
