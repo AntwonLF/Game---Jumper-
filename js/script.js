@@ -11,6 +11,31 @@ const keys = {
     space: false,
 };
 
+class Snowflake {
+    constructor() {
+        this.x = Math.random() * canvasWidth;
+        this.y = Math.random() * canvasHeight;
+        this.size = Math.random() * 5 + 1;
+        this.speed = Math.random() * 1 + 1;
+    }
+
+    draw() {
+        const ctx = gameCanvas.context;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = 'white';
+        ctx.fill();
+    }
+
+    update() {
+        this.y += this.speed;
+        if (this.y > canvasHeight) {
+            this.y = 0;
+            this.x = Math.random() * canvasWidth;
+        }
+    }
+}
+
 const gameCanvas = {
     canvas: document.getElementById('gameCanvas'),
     player: null,
@@ -19,6 +44,8 @@ const gameCanvas = {
     updateInterval: null,
     gameOver: false,
     isRunning: false,
+
+    
 
     start: function () {
         if (!this.isRunning) {
@@ -32,7 +59,11 @@ const gameCanvas = {
         this.player.draw();
         this.block = createBlocks();
 
-        this.updateInterval = setInterval(this.updateCanvas.bind(this), 1000 / 60);
+        this.snowflakes = [];
+        for (let i = 0; i < 100; i++) {
+            this.snowflakes.push(new Snowflake());
+        }
+         this.updateInterval = setInterval(this.updateCanvas.bind(this), 1000 / 60);
        }
     },
 
@@ -131,6 +162,12 @@ const gameCanvas = {
                 this.block[i].draw();
                 this.block[i].attackPlayer();
             }
+
+            for (let i = 0; i < this.snowflakes.length; i++) {
+                this.snowflakes[i].update();
+                this.snowflakes[i].draw();
+            }
+
         this.detectCollision();
         this.drawScore();
 
