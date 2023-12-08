@@ -1,5 +1,7 @@
 # Game---Jumper- && Technologies:
 
+"Jumper" is an engaging 2D side-scrolling game meticulously crafted using the powerful combination of HTML, CSS, and JavaScript. Featuring a dynamic theme that evolves to capture the essence of various holidays, the game unfolds into a captivating spectacle year-round. Presently, it transports players into a charming snowy Christmas wonderland. Taking command of a character, potentially embodying the spirit of Santa Claus, players experience the journey symbolized by an elegantly moving circular image gracefully gliding across the canvas. The seamless deployment of the game through Netlify adds an extra layer of sophistication, enriching the overall gaming experience. Notably, this project benefits from the creative input and assistance provided by ChatGPT, a sophisticated language model developed by OpenAI.
+
 ## Why---Jumper
 I chose to create "Jumper" seeking the challenge of initially developing Angry Birds. After careful consideration, I opted for a variation inspired by Flappy Bird, culminating in the unique creation that is my brainchild. "Jumper" stands out not just for its entertaining gameplay but also for its versatility. The capacity to adapt its theme for diverse holidays adds an extra layer of excitement for players. Whether it's the snowy charm of Christmas or the vibrant hues of other celebrations, "Jumper" ensures a delightful journey through the seasons.Notably, this project benefits from the creative input and assistance provided by ChatGPT, a language model developed by OpenAI.
 
