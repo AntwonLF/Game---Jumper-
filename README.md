@@ -27,6 +27,10 @@ Semi-Responsive Layout: Experience visually appealing and responsive design acro
 Click this link below to play!!
 https://jumperthgame.netlify.app
 
+- Utilize the space bar for jumping, and maintain a continuous rhythm in your jumps.
+- Navigate through the winter challenge by avoiding snowflakes (identified as "Top Obstacles") and Christmas trees (identified as "Bottom Obstacles").
+- Aim to achieve the highest score possible!
+
 ## WireFrames/ Screenshots: 
 ### Before
 
@@ -60,14 +64,14 @@ End
 
 | Day        |   | Task                               | Blockers | Notes/ Thoughts |
 |------------|---|------------------------------------|----------|-----------------|
-| Thursday   |   | Create and present proposal        |          |                 |
-| Friday     |   | Create game enviroment         |          |                 |
-| Saturday   |   | Start building functions and impletmenting            |          |                 |
-| Sunday     |   | Add functionality                  |          |                 |
-| Monday     |   | Add styling                        |          |                 |
-| Tuesday    |   | Finalize MVP                       |          |                 |
-| Wedenesday |   | Work on stretch goals              |          |                 |
-| Thursday   |   | Work on icebox items if applicable |          |                 |
+| Thursday   |   | Create and present proposal        |          |  Y               |
+| Friday     |   | Create game enviroment         |          |Y                 |
+| Saturday   |   | Start building functions and impletmenting            |          |Y                 |
+| Sunday     |   | Add functionality                  |          | Y                |
+| Monday     |   | Add styling                        |          |Y                 |
+| Tuesday    |   | Finalize MVP                       |          | Y               |
+| Wedenesday |   | Work on stretch goals              |          |Y                |
+| Thursday   |   | Work on icebox items if applicable |          | N                |
 | Friday     |   | Presentation Day!                  |          |                 |
 |            |   |                                    |          |                 |
 
