@@ -3,8 +3,11 @@ const canvasHeight = 600;
 const playerYPosition  = canvasHeight - 30;
 const audioContext = new (window.AudioContext || window.AudioContext)();
 const backgroundMusic = new Audio('musicAssets/sounds/lofi-christmas.mp3');
-const playerImage = new Image(); 
+const backgroundImage =  new Image ();
+const thudSound = new Audio("musicAssets/sounds/thud.mp3");
 let score = 0;
+
+
 
 const keys = {
     space: false,
@@ -23,9 +26,6 @@ function playBackgroundMusic () {
     return backgroundMusic;
 }
 
-
-const thudSound = new Audio("musicAssets/sounds/thud.mp3");
-
 function playThudSound() {
     thudSound.currentTime = 0;
     thudSound.play();
@@ -43,21 +43,6 @@ function createBlocks() {
     return [topBlock, bottomBlock];
 }
 
-document.body.addEventListener("keydown", function(event) {
-    if (event.code === "Space") {
-        keys.space = true;
-
-        if (gameCanvas.gameOver) {
-            restartGame();
-        }
-    }
-});
-    
-document.body.addEventListener("keyup", function (event) {
-    if (event.code === "Space") {
-        keys.space = false;
-    }
-});
 
 function restartGame() {
  if (!gameCanvas.isRunning)   {
@@ -80,7 +65,6 @@ function restartGame() {
     score = 0;
    }
 }
-
 const gameCanvas = {
     canvas: document.getElementById('gameCanvas'),
     player: null,
@@ -100,7 +84,6 @@ const gameCanvas = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.player = new Player(30, 30, 10, playerYPosition);
         this.player.draw();
-
         this.block = createBlocks();
 
         this.updateInterval = setInterval(this.updateCanvas.bind(this), 1000 / 60);
@@ -126,36 +109,26 @@ const gameCanvas = {
     },
 
     detectCollision: function () {
-      
-        const player = this.player;
-        const blocks = this.block;
-        let CollisionDetected = false;
-
-        for (let i = 0; i < this.block.length; i++) {
-            const block = blocks[i];
-            const playerTop = player.y - player.radius;
-            const playerBottom = player.y + player.radius;
-            const playerLeft = player.x - player.radius;
-            const playerRight = player.x + player.radius;
-
-            const blockTop = block.y;
-            const blockBottom = block.y + block.height;
-            const blockLeft = block.x;
-            const blockRight = block.x + block.width;
-
-        if (
-           playerBottom > blockTop &&
-           playerTop < blockBottom &&
-           playerRight > blockLeft &&
-           playerLeft < blockRight
-        ) {
-
-            CollisionDetected = true;
-            break;
-             
+       const { player, block } = this;
+        let collisionDetected = false;
+    
+        for (let i = 0; i < block.length; i++) {
+            const { x, y, radius } = player;
+            const { x: blockX, y: blockY, width, height } = block[i];
+    
+            if (
+                y + radius > blockY &&
+                y - radius < blockY + height &&
+                x + radius > blockX &&
+                x - radius < blockX + width
+            ) {
+                collisionDetected = true;
+                break;
+            }
         }
-      }
-        if (CollisionDetected) {            clearInterval(this.updateInterval);
+    
+        if (collisionDetected) {
+            clearInterval(this.updateInterval);
             this.end();
         }
         playThudSound();
@@ -173,7 +146,7 @@ const gameCanvas = {
             const ctx = this.context;
             ctx.font = "20px Arial";
             ctx.fillStyle = "white";
-            ctx.fillText("Press space bar to start", canvasWidth / 2 - 130, canvasHeight / 2 + 50);
+            ctx.fillText("Press space bar to start", canvasWidth / 2 - 155, canvasHeight / 2 + 50);
        }
     },
 
@@ -193,10 +166,10 @@ const gameCanvas = {
         const ctx = this.context;
         ctx.font = "40px Arial";
         ctx.fillStyle = "red";
-        ctx.fillText("GAME OVER", canvasWidth / 2 - 100, canvasHeight / 2 - 20);
+        ctx.fillText("Jumper", canvasWidth / 2 - 125, canvasHeight / 2 - 20);
         ctx.font = "20px Arial";
         ctx.fillStyle = "green";
-        ctx.fillText("Score: " + score, canvasWidth / 2 - 30, canvasHeight / 2 + 20);
+        ctx.fillText("Score: " + score, canvasWidth / 2 - 100, canvasHeight / 2 + 20);
     },
 
     updateCanvas: function () {
@@ -221,7 +194,7 @@ const gameCanvas = {
     },
 
     clearCanvas: function () { 
-        this.context.beginPath();
+        this.context.drawImage(backgroundImage, 0, 0, canvasWidth, canvasHeight);
         this.context.clearRect(0, 0, 800, 600);
     },  
 };
@@ -297,17 +270,21 @@ class Block {
         this.speed = speed;
         this.isTop = isTop;
         this.x = canvasWidth; 
-        this.y = isTop ? yPos : yPos - height; // Adjust the height for top and botton blocks
+        this.y = isTop ? yPos : yPos - height; // Adjust the height for top and botton blocks       
+        this.image = new Image();
+        this.image.src = isTop ? 'assets/snowflake.png' : 'assets/christmasTree.png'  
+
     }
 
     returnToAttackPosition() {
         if (this.x < 0) {
-            this.width = randomNumber(25, 50);
-            this.height = randomNumber(50, 250);
-            this.speed = randomNumber(7, 15);
+            this.width = this.width;
+            this.height = randomNumber(75, 200);
+            this.speed = randomNumber(7, 12);
             score++;
             this.x = canvasWidth;
             this.y = this.isTop ? randomNumber(0, canvasHeight / 2 - this.height) : canvasHeight - this.height;
+            this.image.src = this.isTop ?  'assets/snowflake.png' : 'assets/christmasTree.png';
         }
     }
 
@@ -328,8 +305,7 @@ class Block {
 
     draw() {
         const ctx = gameCanvas.context;
-        ctx.fillStyle = "white";
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
     
         if (this.x + this.width < 0) {
             this.returnToAttackPosition();
@@ -338,7 +314,21 @@ class Block {
         this.x -= this.speed;
     }
 }
+document.body.addEventListener("keydown", function(event) {
+    if (event.code === "Space") {
+        keys.space = true;
 
+        if (gameCanvas.gameOver) {
+            restartGame();
+        }
+    }
+});
+    
+document.body.addEventListener("keyup", function (event) {
+    if (event.code === "Space") {
+        keys.space = false;
+    }
+});
 function startGame() {
     backgroundMusic.play();
     gameCanvas.start();
