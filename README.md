@@ -1,9 +1,9 @@
 # Game---Jumper- && Technologies:
 
-# Why---Jumper:
+## Why---Jumper
 I chose to create "Jumper" seeking the challenge of initially developing Angry Birds. After careful consideration, I opted for a variation inspired by Flappy Bird, culminating in the unique creation that is my brainchild. "Jumper" stands out not just for its entertaining gameplay but also for its versatility. The capacity to adapt its theme for diverse holidays adds an extra layer of excitement for players. Whether it's the snowy charm of Christmas or the vibrant hues of other celebrations, "Jumper" ensures a delightful journey through the seasons.Notably, this project benefits from the creative input and assistance provided by ChatGPT, a language model developed by OpenAI.
 
-# Key---Features:
+## Key---Features:
 
 Seasonal Evolution: Immerse in changing themes with evolving styles to match holidays and seasons.
 
@@ -19,13 +19,13 @@ Festive Music: Dive into the holiday spirit with background music, currently fea
 
 Score Monitoring: Track your performance as you navigate the snowy landscape.
 
-Semi-Responsive Layout: Experience visually appealing and responsive design across various devices.
+Semi-Responsive Layout: Experience visually appealing and responsive design across some devices.
 
-# Getting Started
+## Getting Started
 Click this link below to play!!
 https://jumperthgame.netlify.app
 
-# WireFrames/ Screenshots: 
+## WireFrames/ Screenshots: 
 ### Before
 
 Start
@@ -54,7 +54,7 @@ End
 
 ![Alt text](<assets/Finished (End).png>)
 
-# Timeline
+## Timeline
 
 | Day        |   | Task                               | Blockers | Notes/ Thoughts |
 |------------|---|------------------------------------|----------|-----------------|
@@ -69,7 +69,7 @@ End
 | Friday     |   | Presentation Day!                  |          |                 |
 |            |   |                                    |          |                 |
 
-# Attributions:
+## Attributions
 - Demtrice Williams (Friend, Mentor, 2 Years Dev experience)
 - Fritz 
 - Pranto, Ashiqur Rahman (YouTuber). "Jump and Run Game with HTML, CSS, and JavaScript." https://www.youtube.com/watch?v=a0TyCnFgqlk
@@ -81,15 +81,16 @@ End
 https://uppbeat.io/t/all-good-folks/lo-fi-christmas
 License code: C9VGYGNJKLAQYDRM
 
-# Next Steps
+## Next Steps
 
 - Transform the game theme for a different holiday.
 - Enhance the game's visual experience by incorporating a more pronounced 3D effect.
 - Implement a top three highscores feature to highlight players' achievements.
 - Integrate a playlist for a more dynamic and varied musical experience.
+- Optimize the game for responsiveness and implement touch functionality for jumping on touch-enabled devices.
 
 
-# Game Pseudocode - Jumper
+## Game Pseudocode - Jumper
 ```// Define canvas dimensions
 - Canvas width and height
 

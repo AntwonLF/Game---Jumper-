@@ -68,7 +68,6 @@ const gameCanvas = {
     },
 
     end: function () {
-        // console.log("GAME OVER - Better Luck Next Time");
         this.gameOver = true;
         this.clearCanvas();
         this.drawGameOverMessage();
@@ -80,7 +79,6 @@ const gameCanvas = {
     },
 
     stopCanvas: function () {
-        // console.log("GAME OVER - Better Luck Next Time");
         this.isRunning = false;
         clearInterval(this.updateInterval);
     },
